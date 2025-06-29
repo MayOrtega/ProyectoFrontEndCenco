@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto | Aventuras Sin Fronteras</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Aventuras Sin Fronteras</h1>
+    <nav>
+      <ul class="menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quienesSomos.html">Quiénes Somos</a></li>
+        <li><a href="contacto.html" class="activo">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="contacto" class="formulario">
+      <h2>Contáctanos</h2>
+      <p>¿Tienes dudas o quieres planear tu próximo viaje? ¡Escríbenos!</p>
+      <form id="formularioContacto" method="POST" onsubmit="return validarFormulario()">
+        <label for="nombre">Nombre completo:</label>
+        <input type="text" id="nombre" name="nombre" required />
+
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" required />
+
+        <label for="mensaje">Mensaje:</label>
+        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Aventuras Sin Fronteras · Todos los derechos reservados</p>
+  </footer>
+
+  <script>
+    function validarFormulario() {
+      const nombre = document.getElementById('nombre').value.trim();
+      const correo = document.getElementById('correo').value.trim();
+      const mensaje = document.getElementById('mensaje').value.trim();
+
+      const nombreValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/;
+      const correoValido = /^[^@]+@[^@]+\.[a-z]{2,}$/;
+
+      if (!nombreValido.test(nombre)) {
+        alert("El nombre solo debe contener letras y espacios.");
+        return false;
+      }
+
+      if (!correoValido.test(correo)) {
+        alert("Por favor, ingrese un correo electrónico válido (ej: ejemplo@dominio.com).");
+        return false;
+      }
+
+      if (mensaje.length < 10) {
+        alert("El mensaje debe tener al menos 10 caracteres.");
+        return false;
+      }
+
+      alert("Formulario enviado correctamente.");
+      return true;
+    }
+  </script>
+
+</body>
+</html>
