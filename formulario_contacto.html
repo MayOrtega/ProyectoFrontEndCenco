@@ -9,15 +9,20 @@
 <body>
 
   <header>
-    <h1>Aventuras Sin Fronteras</h1>
-    <nav>
-      <ul class="menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="quienes_somos.html">Quiénes Somos</a></li>
-        <li><a href="formulario_contacto.html" class="activo">Contacto</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="header-top">
+    <a href="index.html" class="logo-container">
+      <img src="img/logo.png" alt="Aventuras Sin Fronteras" class="logo">
+      <h1 class="site-title">Aventuras Sin Fronteras</h1>
+    </a>
+  </div>
+  <nav>
+    <ul class="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="quienes_somos.html">Quiénes Somos</a></li>
+      <li><a href="formulario_contacto.html" class="activo">Contacto</a></li>
+    </ul>
+  </nav>
+</header>
 
   <main>
     <section id="contacto" class="formulario">
@@ -26,12 +31,15 @@
       <form id="formularioContacto" method="POST" onsubmit="return validarFormulario()">
         <label for="nombre">Nombre completo:</label>
         <input type="text" id="nombre" name="nombre" required />
+        <span id="nombre-error" class="error-message"></span>
 
         <label for="correo">Correo electrónico:</label>
         <input type="email" id="correo" name="correo" required />
+        <span id="correo-error" class="error-message"></span>
 
         <label for="mensaje">Mensaje:</label>
         <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+        <span id="mensaje-error" class="error-message"></span>
 
         <button type="submit">Enviar</button>
       </form>
@@ -43,32 +51,129 @@
   </footer>
 
   <script>
-    function validarFormulario() {
-      const nombre = document.getElementById('nombre').value.trim();
-      const correo = document.getElementById('correo').value.trim();
-      const mensaje = document.getElementById('mensaje').value.trim();
+            function validarFormulario() {
+          const nombreInput = document.getElementById('nombre');
+          const correoInput = document.getElementById('correo');
+          const mensajeInput = document.getElementById('mensaje');
+          
+          const nombreValido = validarNombreInput(nombreInput);
+          const correoValido = validarCorreoInput(correoInput);
+          const mensajeValido = validarMensajeInput(mensajeInput);
+          
+          if (nombreValido && correoValido && mensajeValido) {
+            alert("Formulario enviado correctamente.");
+            return true;
+          } else {
+            if (!nombreValido) nombreInput.focus();
+            else if (!correoValido) correoInput.focus();
+            else if (!mensajeValido) mensajeInput.focus();
+            
+            return false;
+          }
+        }
 
-      const nombreValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/;
-      const correoValido = /^[^@]+@[^@]+\.[a-z]{2,}$/;
-
-      if (!nombreValido.test(nombre)) {
-        alert("El nombre solo debe contener letras y espacios.");
+          function validarNombreInput(input) {
+      const nombre = input.value.trim();
+      const nombreValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ'\-]+(?: [A-Za-zÁÉÍÓÚáéíóúÑñ'\-]+)+$/;
+      const errorElement = document.getElementById('nombre-error');
+      
+      if (nombre === '') {
+        errorElement.textContent = '';
+        input.classList.remove('error');
+        return true;
+      } else if (!nombreValido.test(nombre)) {
+        errorElement.textContent = "Por favor, ingrese nombre y apellido. Solo se permiten letras y espacios. ej: Juan Pérez";
+        input.classList.add('error');
         return false;
+      } else {
+        errorElement.textContent = '';
+        input.classList.remove('error');
+        return true;
       }
-
-      if (!correoValido.test(correo)) {
-        alert("Por favor, ingrese un correo electrónico válido (ej: ejemplo@dominio.com).");
-        return false;
-      }
-
-      if (mensaje.length < 10) {
-        alert("El mensaje debe tener al menos 10 caracteres.");
-        return false;
-      }
-
-      alert("Formulario enviado correctamente.");
-      return true;
     }
+
+    function validarCorreoInput(input) {
+      const correo = input.value.trim();
+      const correoValido = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9-]{2,}$/;
+      const errorElement = document.getElementById('correo-error');
+      
+      if (correo === '') {
+        errorElement.textContent = '';
+        input.classList.remove('error');
+        return true;
+      } else if (!correoValido.test(correo)) {
+        errorElement.textContent = "Por favor, ingrese un correo electrónico válido (ej: ejemplo@dominio.com).";
+        input.classList.add('error');
+        return false;
+      } else {
+        errorElement.textContent = '';
+        input.classList.remove('error');
+        return true;
+      }
+    }
+
+    function validarMensajeInput(input) {
+      const mensaje = input.value.trim();
+      const errorElement = document.getElementById('mensaje-error');
+      
+      if (mensaje === '') {
+        errorElement.textContent = '';
+        input.classList.remove('error');
+        return true;
+      } else if (mensaje.length < 10) {
+        errorElement.textContent = "El mensaje debe tener al menos 10 caracteres.";
+        input.classList.add('error');
+        return false;
+      } else if (mensaje.length > 1000) {
+        errorElement.textContent = "El mensaje es demasiado largo. Por favor, limítelo a 1000 caracteres.";
+        input.classList.add('error');
+        return false;
+      } else {
+        errorElement.textContent = '';
+        input.classList.remove('error');
+        return true;
+      }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const nombreInput = document.getElementById('nombre');
+      const correoInput = document.getElementById('correo');
+      const mensajeInput = document.getElementById('mensaje');
+      
+
+      nombreInput.addEventListener('blur', function() {
+        validarNombreInput(this);
+      });
+      
+      correoInput.addEventListener('blur', function() {
+        validarCorreoInput(this);
+      });
+      
+      mensajeInput.addEventListener('blur', function() {
+        validarMensajeInput(this);
+      });
+      
+     
+      nombreInput.addEventListener('input', function() {
+        if (this.classList.contains('error')) {
+          validarNombreInput(this);
+        }
+      });
+      
+      correoInput.addEventListener('input', function() {
+        if (this.classList.contains('error')) {
+          validarCorreoInput(this);
+        }
+      });
+      
+      mensajeInput.addEventListener('input', function() {
+        if (this.classList.contains('error')) {
+          validarMensajeInput(this);
+        }
+      });
+});
+
   </script>
 
 </body>
