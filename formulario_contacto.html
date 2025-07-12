@@ -28,21 +28,41 @@
     <section id="contacto" class="formulario">
       <h2>Contáctanos</h2>
       <p>¿Tienes dudas o quieres planear tu próximo viaje? ¡Escríbenos!</p>
+      
       <form id="formularioContacto" method="POST" onsubmit="return validarFormulario()">
-        <label for="nombre">Nombre completo:</label>
-        <input type="text" id="nombre" name="nombre" required />
-        <span id="nombre-error" class="error-message"></span>
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre y apellido" required />
+          <span id="nombre-error" class="error-message"></span>
+        </div>
 
-        <label for="correo">Correo electrónico:</label>
-        <input type="email" id="correo" name="correo" required />
-        <span id="correo-error" class="error-message"></span>
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" required />
+          <span id="correo-error" class="error-message"></span>
+        </div>
 
-        <label for="mensaje">Mensaje:</label>
-        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
-        <span id="mensaje-error" class="error-message"></span>
+        <div class="form-group">
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" name="mensaje" rows="5" placeholder="¿En qué podemos ayudarte?" required></textarea>
+          <span id="mensaje-error" class="error-message"></span>
+        </div>
 
-        <button type="submit">Enviar</button>
+        <button type="submit">Enviar mensaje</button>
       </form>
+    </section>
+
+    <section class="ubicacion">
+      <h2>Nuestra Ubicación</h2>
+      <p>Visítanos en nuestras oficinas centrales:</p>
+      <div class="mapa-container">
+        <div id="mapa" style="width: 100%; height: 400px;"></div>
+      </div>
+      <div class="direccion-info">
+        <p><strong>Dirección:</strong> Amunátegui 20, Santiago, Región Metropolitana</p>
+        <p><strong>Horario:</strong> Lunes a Viernes de 9:00 a 18:00 hrs.</p>
+        <p><strong>Teléfono:</strong> +56 2 2123 4567</p>
+      </div>
     </section>
   </main>
 
@@ -51,42 +71,45 @@
   </footer>
 
   <script>
-            function validarFormulario() {
-          const nombreInput = document.getElementById('nombre');
-          const correoInput = document.getElementById('correo');
-          const mensajeInput = document.getElementById('mensaje');
-          
-          const nombreValido = validarNombreInput(nombreInput);
-          const correoValido = validarCorreoInput(correoInput);
-          const mensajeValido = validarMensajeInput(mensajeInput);
-          
-          if (nombreValido && correoValido && mensajeValido) {
-            alert("Formulario enviado correctamente.");
-            return true;
-          } else {
-            if (!nombreValido) nombreInput.focus();
-            else if (!correoValido) correoInput.focus();
-            else if (!mensajeValido) mensajeInput.focus();
-            
-            return false;
-          }
-        }
+    function validarFormulario() {
+      const nombreInput = document.getElementById('nombre');
+      const correoInput = document.getElementById('correo');
+      const mensajeInput = document.getElementById('mensaje');
+      
+      const nombreValido = validarNombreInput(nombreInput);
+      const correoValido = validarCorreoInput(correoInput);
+      const mensajeValido = validarMensajeInput(mensajeInput);
+      
+      if (nombreValido && correoValido && mensajeValido) {
+        alert("Formulario enviado correctamente.");
+        return true;
+      } else {
+        if (!nombreValido) nombreInput.focus();
+        else if (!correoValido) correoInput.focus();
+        else if (!mensajeValido) mensajeInput.focus();
+        
+        return false;
+      }
+    }
 
-          function validarNombreInput(input) {
+    function validarNombreInput(input) {
       const nombre = input.value.trim();
       const nombreValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ'\-]+(?: [A-Za-zÁÉÍÓÚáéíóúÑñ'\-]+)+$/;
       const errorElement = document.getElementById('nombre-error');
       
       if (nombre === '') {
         errorElement.textContent = '';
+        errorElement.classList.remove('visible');
         input.classList.remove('error');
         return true;
       } else if (!nombreValido.test(nombre)) {
         errorElement.textContent = "Por favor, ingrese nombre y apellido. Solo se permiten letras y espacios. ej: Juan Pérez";
+        errorElement.classList.add('visible');
         input.classList.add('error');
         return false;
       } else {
         errorElement.textContent = '';
+        errorElement.classList.remove('visible');
         input.classList.remove('error');
         return true;
       }
@@ -99,14 +122,17 @@
       
       if (correo === '') {
         errorElement.textContent = '';
+        errorElement.classList.remove('visible');
         input.classList.remove('error');
         return true;
       } else if (!correoValido.test(correo)) {
         errorElement.textContent = "Por favor, ingrese un correo electrónico válido (ej: ejemplo@dominio.com).";
+        errorElement.classList.add('visible');
         input.classList.add('error');
         return false;
       } else {
         errorElement.textContent = '';
+        errorElement.classList.remove('visible');
         input.classList.remove('error');
         return true;
       }
@@ -118,29 +144,35 @@
       
       if (mensaje === '') {
         errorElement.textContent = '';
+        errorElement.classList.remove('visible');
         input.classList.remove('error');
         return true;
       } else if (mensaje.length < 10) {
         errorElement.textContent = "El mensaje debe tener al menos 10 caracteres.";
+        errorElement.classList.add('visible');
         input.classList.add('error');
         return false;
       } else if (mensaje.length > 1000) {
         errorElement.textContent = "El mensaje es demasiado largo. Por favor, limítelo a 1000 caracteres.";
+        errorElement.classList.add('visible');
         input.classList.add('error');
         return false;
       } else {
         errorElement.textContent = '';
+        errorElement.classList.remove('visible');
         input.classList.remove('error');
         return true;
       }
     }
-
 
     document.addEventListener('DOMContentLoaded', function() {
       const nombreInput = document.getElementById('nombre');
       const correoInput = document.getElementById('correo');
       const mensajeInput = document.getElementById('mensaje');
       
+      document.querySelectorAll('.error-message').forEach(el => {
+        el.classList.remove('visible');
+      });
 
       nombreInput.addEventListener('blur', function() {
         validarNombreInput(this);
@@ -154,7 +186,6 @@
         validarMensajeInput(this);
       });
       
-     
       nombreInput.addEventListener('input', function() {
         if (this.classList.contains('error')) {
           validarNombreInput(this);
@@ -172,8 +203,45 @@
           validarMensajeInput(this);
         }
       });
-});
+    });
+</script>
+ <script>
+    function initMap() {
+      const ubicacion = { lat: -33.4400, lng: -70.6503 };
+      
+      const map = new google.maps.Map(document.getElementById("mapa"), {
+        zoom: 16,
+        center: ubicacion,
+        mapTypeControl: true,
+        streetViewControl: true,
+        fullscreenControl: true,
+      });
+      
+      const marker = new google.maps.Marker({
+        position: ubicacion,
+        map: map,
+        title: "Aventuras Sin Fronteras",
+        animation: google.maps.Animation.DROP
+      });
+      
+      const infoWindow = new google.maps.InfoWindow({
+        content: `
+          <div class="info-window">
+            <h3>Aventuras Sin Fronteras</h3>
+            <p>¡Ven a planear tu próxima aventura!</p>
+            <p>Amunátegui 20, Santiago</p>
+          </div>
+        `
+      });
+      
+      marker.addListener("click", () => {
+        infoWindow.open(map, marker);
+      });
+    }
+  </script>
 
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPcuHi7G5pHvqr-1jqFtRYrob-E9Wwk7c&callback=initMap">
   </script>
 
 </body>
