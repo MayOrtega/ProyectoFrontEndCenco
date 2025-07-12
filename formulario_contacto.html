@@ -56,7 +56,16 @@
       <h2>Nuestra Ubicación</h2>
       <p>Visítanos en nuestras oficinas centrales:</p>
       <div class="mapa-container">
-        <div id="mapa" style="width: 100%; height: 400px;"></div>
+        <!-- Código de iframe copiado de Google Maps -->
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.211097096159!2d-70.65700587990116!3d-33.44380637587715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662c5a7b81bab67%3A0x7cf5cd1956dd49f7!2sTorre%20Entel!5e0!3m2!1ses-419!2scl!4v1752356950661!5m2!1ses-419!2scl" 
+          width="100%" 
+          height="400" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
       </div>
       <div class="direccion-info">
         <p><strong>Dirección:</strong> Amunátegui 20, Santiago, Región Metropolitana</p>
@@ -205,44 +214,5 @@
       });
     });
 </script>
- <script>
-    function initMap() {
-      const ubicacion = { lat: -33.4400, lng: -70.6503 };
-      
-      const map = new google.maps.Map(document.getElementById("mapa"), {
-        zoom: 16,
-        center: ubicacion,
-        mapTypeControl: true,
-        streetViewControl: true,
-        fullscreenControl: true,
-      });
-      
-      const marker = new google.maps.Marker({
-        position: ubicacion,
-        map: map,
-        title: "Aventuras Sin Fronteras",
-        animation: google.maps.Animation.DROP
-      });
-      
-      const infoWindow = new google.maps.InfoWindow({
-        content: `
-          <div class="info-window">
-            <h3>Aventuras Sin Fronteras</h3>
-            <p>¡Ven a planear tu próxima aventura!</p>
-            <p>Amunátegui 20, Santiago</p>
-          </div>
-        `
-      });
-      
-      marker.addListener("click", () => {
-        infoWindow.open(map, marker);
-      });
-    }
-  </script>
-
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPcuHi7G5pHvqr-1jqFtRYrob-E9Wwk7c&callback=initMap">
-  </script>
-
 </body>
 </html>
